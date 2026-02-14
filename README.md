@@ -3,12 +3,12 @@
 
 - A lightweight Python program that calculates the complement and reverse complement of a DNA sequences using standard base-pairing rules. This project demonstrates fundamental bioinformatics logic, string manipulation, and some biological data processing.
 
-# Author Info
+## Author Info
 
 - Name: Ethan E. Lopez
 - Email: ethanelopez04@gmail.com
 
-# View Ai-Inspired Website
+## View Ai-Inspired Website
 
 This website is part of a broader initiative titled Ethan LLM Works, a series of projects wherein I transform my original coding programs into interactive HTML-based simulations and calculators using advanced prompt engineering workflows.
 
