@@ -1,5 +1,5 @@
 # Helix Pair
-### DNA Complement Converter
+### DNA Complement Calculator
 
 - A lightweight Python program that calculates the complement and reverse complement of a DNA sequences using standard base-pairing rules. This project demonstrates fundamental bioinformatics logic, string manipulation, and some biological data processing.
 
