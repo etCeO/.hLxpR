@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DNA Complement Calculator</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0, 180, 216, 0.12), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(144, 224, 239, 0.15), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(72, 202, 228, 0.12), transparent 50%),
+        #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    h1, h2 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      font-size: 16px;
+      font-family: inherit;
+      border-radius: 8px;
+      border: 1px solid #ccd4db;
+      background: #fafbfc;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #0077cc;
+      box-shadow: 0 0 0 3px rgba(0,119,204,0.15);
+      background: white;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: inherit;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background: #005fa3;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .output {
+      background: #f1f5f9;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    /* 2D Double Helix DNA Visual */
+    .dna-helix {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+      font-family: monospace;
+    }
+
+    .dna-rung {
+      display: flex;
+      justify-content: center;
+      margin: 2px 0;
+      transform-origin: center;
+      animation: twist 4s linear infinite;
+    }
+
+    .base {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      margin: 0 8px;
+      font-size: 14px;
+    }
+
+    .A { background: #4CAF50; } /* green */
+    .T { background: #F44336; } /* red */
+    .G { background: #FFEB3B; color: black;} /* yellow */
+    .C { background: #2196F3; } /* blue */
+
+    /* simulate helix twist */
+    @keyframes twist {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(10deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-10deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    footer {
+      margin-top: 40px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>DNA Complement Calculator</h1>
+
+    <label for="dna">Enter DNA Sequence:</label>
+    <input type="text" id="dna" placeholder="Example: ATGCCG">
+
+    <button onclick="processDNA()">Calculate</button>
+
+    <h2>Results</h2>
+    <div class="output">
+      <strong>Complement:</strong>
+      <div id="complement"></div>
+      <div id="complementVisual" class="dna-helix"></div>
+      <br>
+      <strong>Reverse Complement:</strong>
+      <div id="revComplement"></div>
+      <div id="revComplementVisual" class="dna-helix"></div>
+    </div>
+
+    <footer>
+      <h2>Send Feedback</h2>
+    
+      <!-- Replace YOUR_FORMSPREE_ID with your actual Formspree form ID -->
+      <form action="https://formspree.io/f/meelgzoo" method="POST">
+        
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" id="name" required>
+    
+        <label for="email">Your Email:</label>
+        <input type="email" name="_replyto" id="email" required>
+    
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" required></textarea>
+        
+        <button type="submit">Send Message</button>
+      </form>
+      <p id="formStatus" style="margin-top:15px;font-weight:500;"></p>    </footer>
+    </div>
+
+  <script>
+    function complementDNA(dna) {
+      dna = dna.toUpperCase();
+      let c = "";
+      for (let letter of dna) {
+        if (letter === "A") c += "T";
+        else if (letter === "T") c += "A";
+        else if (letter === "G") c += "C";
+        else if (letter === "C") c += "G";
+      }
+      return c;
+    }
+
+    function reverseComplementDNA(dna) {
+      return complementDNA(dna.split("").reverse().join(""));
+    }
+
+    function visualizeDNAHelix(dna, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = ""; // Clear previous
+
+      const complement = complementDNA(dna);
+
+      for (let i = 0; i < dna.length; i++) {
+        const rung = document.createElement("div");
+        rung.className = "dna-rung";
+
+        // Base on original strand
+        const base1 = document.createElement("span");
+        base1.className = "base " + dna[i].toUpperCase();
+        base1.textContent = dna[i].toUpperCase();
+
+        // Complementary base
+        const base2 = document.createElement("span");
+        base2.className = "base " + complement[i];
+        base2.textContent = complement[i];
+
+        rung.appendChild(base1);
+        rung.appendChild(base2);
+        container.appendChild(rung);
+      }
+    }
+
+    function processDNA() {
+      const dna = document.getElementById("dna").value.toUpperCase();
+      const complement = complementDNA(dna);
+      const revComplement = reverseComplementDNA(dna);
+
+      document.getElementById("complement").textContent = complement;
+      document.getElementById("revComplement").textContent = revComplement;
+
+      visualizeDNAHelix(dna, "complementVisual");
+      visualizeDNAHelix(dna.split("").reverse().join(""), "revComplementVisual");
+    }
+
+    const form = document.getElementById("contactForm");
+    const status = document.getElementById("formStatus");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const data = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          status.textContent = "Thanks! Your message has been sent.";
+          form.reset();
+        } else {
+          status.textContent = "Oops! Something went wrong.";
+        }
+      } catch (error) {
+        status.textContent = "Network error. Please try again.";
+      }
+    });    
+  </script>
+</body>
+</html>
