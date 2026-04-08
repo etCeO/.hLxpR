@@ -21,3 +21,9 @@ Ethan LLM Works is a self-directed, independent passion of mine I pursue in free
 ### Sample Prompt Engineering
 **Core Implementation**
 
+1. “Turn this Python DNA complement program into a simple website.”
+2. “Make sure the DNA input only contains A, T, C, and G.”
+3. “Label the outputs clearly (Complement / Reverse Complement).”
+4. "Modify the background to reflect a clean biology theme."
+5. "Output the results as color coded moving DNA sequences."
+6. "Ensure all titles follow a consistent font."
